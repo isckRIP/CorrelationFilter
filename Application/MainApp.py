@@ -1,53 +1,73 @@
-from PyQt5.QtWidgets import QMainWindow, QGridLayout, QWidget, QPushButton, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
-from PyQt5.QtGui import QColor, QPalette
+from PyQt5.QtWidgets import (
+    QGridLayout,
+    QWidget,
+    QPushButton,
+    QLabel,
+    QLineEdit,
+    QHBoxLayout,
+    QVBoxLayout,
+    QGroupBox,
+    QLayout,
+    QDialog
+)
 
 
-class MainWindow(QMainWindow):
+
+class MainWindow(QDialog):
     def __init__(self):
         super().__init__()
+
+        # Создание виджетов
+        self.create_params_in()
+        self.create_params_out()
+        self.create_plots()
+        self.create_math()
+
+        # Задаем родительскую сетку
+        main_layout = QGridLayout()
+        main_layout.addWidget(self._params_in_group_box_, 0, 0)
+        main_layout.addWidget(self._params_out_group_box_, 0, 1)
+        main_layout.addWidget(self._plots_group_box_, 0, 2, 2, 2)
+        main_layout.addWidget(self._math_group_box_, 1, 0, 1, 2)
+
+        self.setLayout(main_layout)
+
         self.setWindowTitle("Корреляционный фильтр")
 
-        # Элементы интерфейса
-        self.button_generate = QPushButton("Рассчитать")
-        label_frequency = QLabel("Частота:")
-        label_phase = QLabel("Фаза:")
-        label_amplitude = QLabel("Амплитуда:")
-        label_duration = QLabel("Частота дискретизации:")
-        label_time = QLabel("Время:")
-        label_probing_signal = QLabel("Зондирующий сигнал")
-        label_reflected_signal = QLabel("Отражённый сигнал:")
-        label_plots = QLabel("Грфики:")
-        label_params = QLabel("Параметры сигналов:")
-        input_frequency_in = QLineEdit()
-        input_phase_in = QLineEdit()
-        input_amplitude_in = QLineEdit()
-        input_frequency_out = QLineEdit()
-        input_phase_out = QLineEdit()
-        input_amplitude_out = QLineEdit()
-        input_duration = QLineEdit()
-        input_time = QLineEdit()
+    def create_params_in(self):
+        self._params_in_group_box_ = QGroupBox("Зондирующий сигнал")
 
-        layout = QHBoxLayout()
+        self.label_frequency_in = QLabel()
+        self.label_phase_in = QLabel()
 
-        layout.addWidget(Color('red'))
-        layout.addWidget(Color('green'))
-        layout.addWidget(Color('blue'))
+        _params_in_ = QGridLayout()
+        _params_in_.addWidget(self.label_frequency_in, 0, 0)
+        _params_in_.addWidget(self.label_phase_in, 1, 0)
 
-        layout.setContentsMargins(30, 30, 30, 30)
-        layout.setSpacing(20)
+        self._params_in_group_box_.setLayout(_params_in_)
 
-        widget = QWidget()
-        widget.setLayout(layout)
+    def create_params_out(self):
+        self._params_out_group_box_ = QGroupBox("Принимаемый сигнал")
 
-        self.setCentralWidget(widget)
+        self.label_frequency_out = QLabel()
+        self.label_phase_out = QLabel()
 
+        _params_out_ = QGridLayout()
+        _params_out_.addWidget(self.label_frequency_out, 0, 0)
+        _params_out_.addWidget(self.label_phase_out, 1, 0)
 
-class Color(QWidget):
+        self._params_out_group_box_.setLayout(_params_out_)
 
-    def __init__(self, color):
-        super(Color, self).__init__()
-        self.setAutoFillBackground(True)
+    def create_plots(self):
+        self._plots_group_box_ = QGroupBox("Графики")
 
-        palette = self.palette()
-        palette.setColor(QPalette.ColorRole.Window, QColor(color))
-        self.setPalette(palette)
+        plots = QVBoxLayout()
+
+        self._plots_group_box_.setLayout(plots)
+
+    def create_math(self):
+        self._math_group_box_ = QGroupBox("Настройки графиков")
+
+        math = QGridLayout()
+
+        self._math_group_box_.setLayout(math)
