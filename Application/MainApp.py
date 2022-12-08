@@ -1,18 +1,16 @@
 from PyQt5.QtWidgets import (
     QGridLayout,
-    QWidget,
     QPushButton,
     QLabel,
     QLineEdit,
-    QHBoxLayout,
     QVBoxLayout,
     QGroupBox,
-    QLayout,
     QDialog,
-    QSpacerItem,
-    QSizePolicy
 )
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph as pg
 from PyQt5.QtCore import Qt
+from Components.Signal import Signal
 
 
 
@@ -88,7 +86,18 @@ class MainWindow(QDialog):
     def create_plots(self):
         self._plots_group_box_ = QGroupBox("Графики")
 
+
         plots = QVBoxLayout()
+
+        self.graphWidget = PlotWidget()
+
+        signal_in = Signal(2, 2, 300, 400, 10)
+        y, x = signal_in.calculations()
+        self.graphWidget.plot(x, y)
+
+        plots.addWidget(self.graphWidget)
+
+        self._plots_group_box_.setLayout(plots)
 
         self._plots_group_box_.setLayout(plots)
 
