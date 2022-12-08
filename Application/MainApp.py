@@ -8,8 +8,11 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QGroupBox,
     QLayout,
-    QDialog
+    QDialog,
+    QSpacerItem,
+    QSizePolicy
 )
+from PyQt5.QtCore import Qt
 
 
 
@@ -36,25 +39,52 @@ class MainWindow(QDialog):
 
     def create_params_in(self):
         self._params_in_group_box_ = QGroupBox("Зондирующий сигнал")
+        self._params_in_group_box_.setMaximumWidth(200)
 
-        self.label_frequency_in = QLabel()
-        self.label_phase_in = QLabel()
+
+        self.input_frequency_in = QLineEdit()
+        self.input_phase_in = QLineEdit()
+        self.input_amplitude_in = QLineEdit()
+
+        self.input_frequency_in.setFixedWidth(50)
+        self.input_phase_in.setFixedWidth(50)
+        self.input_amplitude_in.setFixedWidth(50)
 
         _params_in_ = QGridLayout()
-        _params_in_.addWidget(self.label_frequency_in, 0, 0)
-        _params_in_.addWidget(self.label_phase_in, 1, 0)
+
+        _params_in_.addWidget(QLabel("Частота (Гц):"), 0, 0)
+        _params_in_.addWidget(QLabel("Фаза:"), 1, 0)
+        _params_in_.addWidget(QLabel("Амплитуда (мВ):"), 2, 0)
+        _params_in_.addWidget(self.input_frequency_in, 0, 1)
+        _params_in_.addWidget(self.input_phase_in, 1, 1)
+        _params_in_.addWidget(self.input_amplitude_in, 2, 1)
+        _params_in_.setColumnStretch(2, 1)
+
 
         self._params_in_group_box_.setLayout(_params_in_)
 
     def create_params_out(self):
         self._params_out_group_box_ = QGroupBox("Принимаемый сигнал")
+        self._params_out_group_box_.setMaximumWidth(200)
 
-        self.label_frequency_out = QLabel()
-        self.label_phase_out = QLabel()
+        self.input_frequency_out = QLineEdit()
+        self.input_phase_out = QLineEdit()
+        self.input_amplitude_out = QLineEdit()
+
+        self.input_frequency_out.setFixedWidth(50)
+        self.input_phase_out.setFixedWidth(50)
+        self.input_amplitude_out.setFixedWidth(50)
 
         _params_out_ = QGridLayout()
-        _params_out_.addWidget(self.label_frequency_out, 0, 0)
-        _params_out_.addWidget(self.label_phase_out, 1, 0)
+
+        _params_out_.addWidget(QLabel("Частота (Гц):"), 0, 0)
+        _params_out_.addWidget(QLabel("Фаза:"), 1, 0)
+        _params_out_.addWidget(QLabel("Амплитуда (мВ):"), 2, 0)
+        _params_out_.addWidget(self.input_frequency_out, 0, 1)
+        _params_out_.addWidget(self.input_phase_out, 1, 1)
+        _params_out_.addWidget(self.input_amplitude_out, 2, 1)
+        _params_out_.setColumnStretch(2, 1)
+
 
         self._params_out_group_box_.setLayout(_params_out_)
 
