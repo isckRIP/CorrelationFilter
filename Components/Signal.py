@@ -13,11 +13,11 @@ class Signal:
         x = []
         y = []
         for i in range(self.duration*self.time):
-            x.append(cos(2*pi*self.frequency*i/self.duration+self.phase)*self.amplitude)
-            y.append(i/self.duration)
+            y.append(cos(2*pi*self.frequency*i/self.duration*self.time+self.phase)*self.amplitude)
+            x.append(i/self.duration*self.time)
         return x, y
 
 
 signal_in = Signal(100, 200, 300, 400, 500)
 x, y = signal_in.calculations()
-print(x, y)
+print(signal_in.amplitude)

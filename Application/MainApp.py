@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (
     QGroupBox,
     QDialog,
 )
-from pyqtgraph import PlotWidget, plot
+from pyqtgraph import PlotWidget, plot, PlotCurveItem
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
 from Components.Signal import Signal
@@ -19,10 +19,10 @@ class MainWindow(QDialog):
         super().__init__()
 
         # Создание виджетов
-        self.create_params_in()
-        self.create_params_out()
-        self.create_plots()
-        self.create_math()
+        self.createParamsIn()
+        self.createParamsOut()
+        self.createPlots()
+        self.createMath()
 
         # Задаем родительскую сетку
         main_layout = QGridLayout()
@@ -35,7 +35,23 @@ class MainWindow(QDialog):
 
         self.setWindowTitle("Корреляционный фильтр")
 
-    def create_params_in(self):
+    def amplitudeInChanged(self, amp):
+        self.signal_in.amplitude = int(amp)
+        x, y = self.signal_in.calculations()
+        self.plot_in.setData(x, y)
+
+    def phaseInChanged(self, ph):
+        self.signal_in.phase = int(ph)
+        x, y = self.signal_in.calculations()
+        self.plot_in.setData(x, y)
+
+    def frequencyInChanged(self, fr):
+        self.signal_in.frequency = int(fr)
+        x, y = self.signal_in.calculations()
+        self.plot_in.setData(x, y)
+
+    def createParamsIn(self):
+
         self._params_in_group_box_ = QGroupBox("Зондирующий сигнал")
         self._params_in_group_box_.setMaximumWidth(200)
 
@@ -57,9 +73,19 @@ class MainWindow(QDialog):
         _params_in_.addWidget(self.input_amplitude_in, 2, 1)
         _params_in_.setColumnStretch(2, 1)
 
+        # Устанавливаем значения поумолчанию
+        self.input_frequency_in.setText("2")
+        self.input_phase_in.setText("0")
+        self.input_amplitude_in.setText("5")
+
+        # Подключаем коннекторы к полям ввода
+        self.input_amplitude_in.textEdited.connect(self.amplitudeInChanged)
+        self.input_phase_in.textEdited.connect(self.phaseInChanged)
+        self.input_frequency_in.textEdited.connect(self.frequencyInChanged)
+
         self._params_in_group_box_.setLayout(_params_in_)
 
-    def create_params_out(self):
+    def createParamsOut(self):
         self._params_out_group_box_ = QGroupBox("Принимаемый сигнал")
         self._params_out_group_box_.setMaximumWidth(200)
 
@@ -83,25 +109,19 @@ class MainWindow(QDialog):
 
         self._params_out_group_box_.setLayout(_params_out_)
 
-    def create_plots(self):
-        self._plots_group_box_ = QGroupBox("Графики")
+    def createPlots(self):
+        plots = PlotWidget()
+        self._plots_group_box_ = plots
+
+        self.plot_in = PlotCurveItem()
+        self.signal_in = Signal(2, 5, 0, 400, 10)
+        x, y = self.signal_in.calculations()
+        self.plot_in.setData(x, y)
+        plots.addItem(self.plot_in)
 
 
-        plots = QVBoxLayout()
 
-        self.graphWidget = PlotWidget()
-
-        signal_in = Signal(2, 2, 300, 400, 10)
-        y, x = signal_in.calculations()
-        self.graphWidget.plot(x, y)
-
-        plots.addWidget(self.graphWidget)
-
-        self._plots_group_box_.setLayout(plots)
-
-        self._plots_group_box_.setLayout(plots)
-
-    def create_math(self):
+    def createMath(self):
         self._math_group_box_ = QGroupBox("Настройки графиков")
 
         math = QGridLayout()
