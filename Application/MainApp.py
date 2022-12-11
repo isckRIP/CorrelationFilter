@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (
     QLabel,
     QLineEdit,
     QVBoxLayout,
+    QHBoxLayout,
     QGroupBox,
     QDialog,
 )
@@ -11,7 +12,6 @@ from pyqtgraph import PlotWidget, plot, PlotCurveItem
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
 from Components.Signal import Signal
-
 
 
 class MainWindow(QDialog):
@@ -35,6 +35,7 @@ class MainWindow(QDialog):
 
         self.setWindowTitle("Корреляционный фильтр")
 
+    # Коннекторы
     def amplitudeInChanged(self, amp):
         self.signal_in.amplitude = int(amp)
         x, y = self.signal_in.calculations()
@@ -50,8 +51,23 @@ class MainWindow(QDialog):
         x, y = self.signal_in.calculations()
         self.plot_in.setData(x, y)
 
-    def createParamsIn(self):
+    def amplitudeOutChanged(self, amp):
+        self.signal_out.amplitude = int(amp)
+        x, y = self.signal_out.calculations()
+        self.plot_out.setData(x, y)
 
+    def phaseOutChanged(self, ph):
+        self.signal_out.phase = int(ph)
+        x, y = self.signal_out.calculations()
+        self.plot_out.setData(x, y)
+
+    def frequencyOutChanged(self, fr):
+        self.signal_out.frequency = int(fr)
+        x, y = self.signal_out.calculations()
+        self.plot_out.setData(x, y)
+
+    # Виджеты
+    def createParamsIn(self):
         self._params_in_group_box_ = QGroupBox("Зондирующий сигнал")
         self._params_in_group_box_.setMaximumWidth(200)
 
@@ -107,19 +123,44 @@ class MainWindow(QDialog):
         _params_out_.addWidget(self.input_amplitude_out, 2, 1)
         _params_out_.setColumnStretch(2, 1)
 
+        # Устанавливаем значения поумолчанию
+        self.input_frequency_out.setText("2")
+        self.input_phase_out.setText("0")
+        self.input_amplitude_out.setText("5")
+
+        # Подключаем коннекторы к полям ввода
+        self.input_amplitude_out.textEdited.connect(self.amplitudeOutChanged)
+        self.input_phase_out.textEdited.connect(self.phaseOutChanged)
+        self.input_frequency_out.textEdited.connect(self.frequencyOutChanged)
+
         self._params_out_group_box_.setLayout(_params_out_)
 
     def createPlots(self):
-        plots = PlotWidget()
-        self._plots_group_box_ = plots
+        self._plots_group_box_ = QGroupBox("Графики")
+
+        plots = QVBoxLayout()
+
+        # Создаем виджеты графиков
+        plot_signal_in = PlotWidget()
+        plot_signal_out = PlotWidget()
 
         self.plot_in = PlotCurveItem()
+        self.plot_out = PlotCurveItem()
+
         self.signal_in = Signal(2, 5, 0, 400, 10)
-        x, y = self.signal_in.calculations()
-        self.plot_in.setData(x, y)
-        plots.addItem(self.plot_in)
+        self.signal_out = Signal(2, 5, 0, 400, 10)
 
+        x_signal_in, y_signal_in = self.signal_in.calculations()
+        x_signal_out, y_signal_out = self.signal_out.calculations()
+        self.plot_in.setData(x_signal_in, y_signal_in)
+        self.plot_out.setData(x_signal_out, y_signal_out)
 
+        plot_signal_in.addItem(self.plot_in)
+        plot_signal_out.addItem(self.plot_out)
+        plots.addWidget(plot_signal_in)
+        plots.addWidget(plot_signal_out)
+
+        self._plots_group_box_.setLayout(plots)
 
     def createMath(self):
         self._math_group_box_ = QGroupBox("Настройки графиков")
