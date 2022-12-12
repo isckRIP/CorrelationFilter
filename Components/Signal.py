@@ -12,7 +12,7 @@ class Signal:
     def calculations(self):
         x = []
         y = []
-        for i in range(self.duration*self.time):
+        for i in range(int(self.duration)*int(self.time)):
             x.append(i/self.duration)
             y.append(cos(2*pi*self.frequency*i/self.duration+self.phase)*self.amplitude)
         return x, y

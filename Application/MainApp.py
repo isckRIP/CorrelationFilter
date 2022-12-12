@@ -83,7 +83,6 @@ class MainWindow(QDialog):
         self.signal_out.frequency = float(fr)
         x, y = self.signal_out.calculations()
         self.plot_out.setData(x, y)
-
     # Виджеты
     def createParamsIn(self):
         self._params_in_group_box_ = QGroupBox("Зондирующий сигнал")
