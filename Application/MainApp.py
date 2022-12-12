@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QGroupBox,
     QDialog,
+    QSlider,
+    QDial
 )
 from pyqtgraph import PlotWidget, plot, PlotCurveItem
 import pyqtgraph as pg
@@ -36,33 +38,49 @@ class MainWindow(QDialog):
         self.setWindowTitle("Корреляционный фильтр")
 
     # Коннекторы
+    def timeIsChanged(self, time):
+        self.signal_in.time = float(time)
+        self.signal_out.time = float(time)
+        x, y = self.signal_in.calculations()
+        self.plot_in.setData(x, y)
+        x, y = self.signal_out.calculations()
+        self.plot_out.setData(x, y)
+
+    def durationIsChanged(self, dur):
+        self.signal_in.duration = float(dur)
+        self.signal_out.duration = float(dur)
+        x, y = self.signal_in.calculations()
+        self.plot_in.setData(x, y)
+        x, y = self.signal_out.calculations()
+        self.plot_out.setData(x, y)
+
     def amplitudeInChanged(self, amp):
-        self.signal_in.amplitude = int(amp)
+        self.signal_in.amplitude = float(amp)
         x, y = self.signal_in.calculations()
         self.plot_in.setData(x, y)
 
     def phaseInChanged(self, ph):
-        self.signal_in.phase = int(ph)
+        self.signal_in.phase = float(ph)
         x, y = self.signal_in.calculations()
         self.plot_in.setData(x, y)
 
     def frequencyInChanged(self, fr):
-        self.signal_in.frequency = int(fr)
+        self.signal_in.frequency = float(fr)
         x, y = self.signal_in.calculations()
         self.plot_in.setData(x, y)
 
     def amplitudeOutChanged(self, amp):
-        self.signal_out.amplitude = int(amp)
+        self.signal_out.amplitude = float(amp)
         x, y = self.signal_out.calculations()
         self.plot_out.setData(x, y)
 
     def phaseOutChanged(self, ph):
-        self.signal_out.phase = int(ph)
+        self.signal_out.phase = float(ph)
         x, y = self.signal_out.calculations()
         self.plot_out.setData(x, y)
 
     def frequencyOutChanged(self, fr):
-        self.signal_out.frequency = int(fr)
+        self.signal_out.frequency = float(fr)
         x, y = self.signal_out.calculations()
         self.plot_out.setData(x, y)
 
@@ -167,17 +185,30 @@ class MainWindow(QDialog):
 
         math = QGridLayout()
 
-        self.button_generate = QPushButton("Отрисовать")
         self.input_duration = QLineEdit()
         self.input_time = QLineEdit()
+        self.dial_time = QDial()
+        self.dial_duration = QDial()
+
+        self.dial_time.setMaximum(100)
+        self.dial_time.setMinimum(0)
+        self.dial_duration.setFixedWidth(150)
+        self.dial_duration.setMaximum(4800)
+        self.dial_duration.setMinimum(10)
+        self.dial_time.setFixedWidth(150)
+
         self.input_time.setFixedWidth(50)
         self.input_duration.setFixedWidth(50)
 
         math.addWidget(QLabel("Частота дискретизации:"), 0, 0)
-        math.addWidget(QLabel("Время:"), 1, 0)
-        math.addWidget(self.input_duration, 0, 1)
-        math.addWidget(self.input_time, 1, 1)
-        math.addWidget(self.button_generate, 2, 2, 1, 2)
+        math.addWidget(QLabel("Время:"), 0, 1)
+        math.addWidget(self.dial_duration, 1, 0)
+        math.addWidget(self.dial_time, 1, 1)
+
+        # Подключаем коннекторы к ручкам
+        self.dial_duration.valueChanged.connect(self.durationIsChanged)
+        self.dial_time.valueChanged.connect(self.timeIsChanged)
+
         math.setColumnStretch(2, 1)
 
         self._math_group_box_.setLayout(math)
