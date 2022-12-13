@@ -1,6 +1,9 @@
 from math import pi, cos
 
 
+
+
+
 class Signal:
     def __init__(self, frequency, amplitude, phase, duration, time):
         self.frequency = frequency
@@ -9,7 +12,7 @@ class Signal:
         self.duration = duration
         self.time = time
 
-    def calculations(self):
+    def calculationsSingnal(self):
         x = []
         y = []
         for i in range(int(self.duration)*int(self.time)):
@@ -17,7 +20,7 @@ class Signal:
             y.append(cos(2*pi*self.frequency*i/self.duration+self.phase)*self.amplitude)
         return x, y
 
-
-signal_in = Signal(100, 200, 300, 400, 500)
-x, y = signal_in.calculations()
-print(signal_in.amplitude)
+    def calculationsProduct(self, x1, y1, x2, y2):
+        for i in range(len(x1)):
+            y1[i] = y1[i] * y2[i]
+        return x2, y1

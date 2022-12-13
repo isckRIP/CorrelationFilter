@@ -8,11 +8,13 @@ from PyQt5.QtWidgets import (
     QGroupBox,
     QDialog,
     QSlider,
-    QDial
+    QDial,
+    QTabWidget,
+    QWidget
 )
 from pyqtgraph import PlotWidget, plot, PlotCurveItem
 import pyqtgraph as pg
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from Components.Signal import Signal
 
 
@@ -41,47 +43,49 @@ class MainWindow(QDialog):
     def timeIsChanged(self, time):
         self.signal_in.time = float(time)
         self.signal_out.time = float(time)
-        x, y = self.signal_in.calculations()
-        self.plot_in.setData(x, y)
-        x, y = self.signal_out.calculations()
-        self.plot_out.setData(x, y)
+        x_out, y_out = self.signal_in.calculationsSingnal()
+        self.plot_in.setData(x_out, y_out)
+        x_in, y_in = self.signal_out.calculationsSingnal()
+        self.plot_out.setData(x_in, y_in)
+        x_product, y_product = self.signal_product.calculationsSingnal(x_out, y_out, x_in, y_in)
+        self.plot_product.setData(x_product, y_product)
 
     def durationIsChanged(self, dur):
         self.signal_in.duration = float(dur)
         self.signal_out.duration = float(dur)
-        x, y = self.signal_in.calculations()
+        x, y = self.signal_in.calculationsSingnal()
         self.plot_in.setData(x, y)
-        x, y = self.signal_out.calculations()
+        x, y = self.signal_out.calculationsSingnal()
         self.plot_out.setData(x, y)
 
     def amplitudeInChanged(self, amp):
         self.signal_in.amplitude = float(amp)
-        x, y = self.signal_in.calculations()
+        x, y = self.signal_in.calculationsSingnal()
         self.plot_in.setData(x, y)
 
     def phaseInChanged(self, ph):
         self.signal_in.phase = float(ph)
-        x, y = self.signal_in.calculations()
+        x, y = self.signal_in.calculationsSingnal()
         self.plot_in.setData(x, y)
 
     def frequencyInChanged(self, fr):
         self.signal_in.frequency = float(fr)
-        x, y = self.signal_in.calculations()
+        x, y = self.signal_in.calculationsSingnal()
         self.plot_in.setData(x, y)
 
     def amplitudeOutChanged(self, amp):
         self.signal_out.amplitude = float(amp)
-        x, y = self.signal_out.calculations()
+        x, y = self.signal_out.calculationsSingnal()
         self.plot_out.setData(x, y)
 
     def phaseOutChanged(self, ph):
         self.signal_out.phase = float(ph)
-        x, y = self.signal_out.calculations()
+        x, y = self.signal_out.calculationsSingnal()
         self.plot_out.setData(x, y)
 
     def frequencyOutChanged(self, fr):
         self.signal_out.frequency = float(fr)
-        x, y = self.signal_out.calculations()
+        x, y = self.signal_out.calculationsSingnal()
         self.plot_out.setData(x, y)
     # Виджеты
     def createParamsIn(self):
@@ -153,61 +157,79 @@ class MainWindow(QDialog):
         self._params_out_group_box_.setLayout(_params_out_)
 
     def createPlots(self):
-        self._plots_group_box_ = QGroupBox("Графики")
 
-        plots = QVBoxLayout()
+        self._plots_group_box_ = QTabWidget()
+
+        signals_group_box = QWidget()
+        calculations_group_box = QWidget()
+
+        plots_signals = QVBoxLayout()
+        plots_calculations = QVBoxLayout()
 
         # Создаем виджеты графиков
         plot_signal_in = PlotWidget()
         plot_signal_out = PlotWidget()
+        plot_signal_product = PlotWidget()
 
         self.plot_in = PlotCurveItem()
         self.plot_out = PlotCurveItem()
+        self.plot_product = PlotCurveItem()
+
 
         self.signal_in = Signal(2, 5, 0, 400, 10)
         self.signal_out = Signal(2, 5, 0, 400, 10)
+        self.signal_product = Signal(2, 5, 0, 400, 10)
 
-        x_signal_in, y_signal_in = self.signal_in.calculations()
-        x_signal_out, y_signal_out = self.signal_out.calculations()
+        x_signal_in, y_signal_in = self.signal_in.calculationsSingnal()
+        x_signal_out, y_signal_out = self.signal_out.calculationsSingnal()
+        x_signal_product, y_signal_product = self.signal_product.calculationsSingnal()
         self.plot_in.setData(x_signal_in, y_signal_in)
         self.plot_out.setData(x_signal_out, y_signal_out)
+        self.plot_product.setData(x_signal_product, y_signal_product)
 
         plot_signal_in.addItem(self.plot_in)
         plot_signal_out.addItem(self.plot_out)
-        plots.addWidget(plot_signal_in)
-        plots.addWidget(plot_signal_out)
+        plot_signal_product.addItem(self.plot_product)
+        plots_signals.addWidget(plot_signal_in)
+        plots_signals.addWidget(plot_signal_out)
+        plots_calculations.addWidget(plot_signal_product)
 
-        self._plots_group_box_.setLayout(plots)
+        signals_group_box.setLayout(plots_signals)
+        calculations_group_box.setLayout(plots_calculations)
+
+        self._plots_group_box_.addTab(signals_group_box, "Сигналы")
+        self._plots_group_box_.addTab(calculations_group_box, "Рассчёты")
 
     def createMath(self):
         self._math_group_box_ = QGroupBox("Настройки графиков")
 
         math = QGridLayout()
 
+        # Создаем виджеты
         self.input_duration = QLineEdit()
         self.input_time = QLineEdit()
         self.dial_time = QDial()
         self.dial_duration = QDial()
 
+        # Устанавливаем настройки виджетов
         self.dial_time.setMaximum(100)
         self.dial_time.setMinimum(0)
         self.dial_duration.setFixedWidth(150)
         self.dial_duration.setMaximum(4800)
         self.dial_duration.setMinimum(10)
         self.dial_time.setFixedWidth(150)
-
         self.input_time.setFixedWidth(50)
         self.input_duration.setFixedWidth(50)
 
+        # Добавляем виджеты в сетку
         math.addWidget(QLabel("Частота дискретизации:"), 0, 0)
         math.addWidget(QLabel("Время:"), 0, 1)
         math.addWidget(self.dial_duration, 1, 0)
         math.addWidget(self.dial_time, 1, 1)
 
-        # Подключаем коннекторы к ручкам
+        # Подключаем коннекторы
         self.dial_duration.valueChanged.connect(self.durationIsChanged)
         self.dial_time.valueChanged.connect(self.timeIsChanged)
 
-        math.setColumnStretch(2, 1)
 
         self._math_group_box_.setLayout(math)
