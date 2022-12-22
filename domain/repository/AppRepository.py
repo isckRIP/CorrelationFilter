@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
-from domain.entity.Signal import Signal
+from domain.entity.SignalProbe import SignalProbe
 from domain.entity.GraphOfSignal import GraphOfSignal
 
 
 class AppRepository(ABC):
 
     @abstractmethod
-    def getGraphOfSignal(self, signal: Signal) -> GraphOfSignal:
+    def getGraphOfSignal(self, signal: SignalProbe) -> GraphOfSignal:
         pass
 
     @abstractmethod
