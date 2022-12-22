@@ -10,7 +10,7 @@ class AppRepositoryImpl(AppRepository):
     def getGraphOfSignal(self, signal: SignalProbe):
         x = []
         y = []
-        for i in range(int(signal.duration) * int(signal.time)):
+        for i in range(int(signal.duration * signal.time)):
             x.append(i / signal.duration)
             y.append(cos(2 * pi * signal.frequency * i / signal.duration + signal.phase) * signal.amplitude)
             # data(x, y)

@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QTabWidget, QWidget, QVBoxLayout
 from pyqtgraph import PlotWidget, PlotCurveItem
 from presentation.controller.MainAppController import MainAppController
-from domain.entity.SignalProbe import SignalProbe
 
 
 class PlotsCreator:
     controller = MainAppController
+    plot_in = PlotCurveItem()
 
     def createPlots(self):
 
@@ -22,7 +22,7 @@ class PlotsCreator:
         plot_signal_out = PlotWidget()
         plot_signal_product = PlotWidget()
 
-        self.plot_in = PlotCurveItem()
+
         self.plot_out = PlotCurveItem()
         self.plot_product = PlotCurveItem()
 
@@ -45,6 +45,7 @@ class PlotsCreator:
         _plots_group_box_.addTab(calculations_group_box, "Рассчёты")
         return _plots_group_box_
 
-    # def updatePlot(self):
-    #     self.plot_in.setData(self.controller.updatePlotSignalProbe(MainAppController)[0],
-    #                          self.controller.updatePlotSignalProbe(MainAppController)[1])
+    def updatePlot(self):
+        self.plot_in.setData(self.controller.updatePlotSignalProbe(MainAppController)[0],
+                             self.controller.updatePlotSignalProbe(MainAppController)[1])
+        print("График обн")

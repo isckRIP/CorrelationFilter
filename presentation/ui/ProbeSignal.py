@@ -1,9 +1,11 @@
 from PyQt5.QtWidgets import QGroupBox, QLineEdit, QGridLayout, QLabel
 from presentation.controller.MainAppController import MainAppController
+from presentation.ui.Plots import PlotsCreator
 
 
 class SignalProbeCreator:
     controller = MainAppController()
+    plot = PlotsCreator()
 
 
     def createProbeSignal(self):
@@ -40,8 +42,11 @@ class SignalProbeCreator:
 
         # Подключаем коннекторы к полям ввода
         self.input_amplitude_in.textEdited.connect(self.controller.changeAmplitudeSignalProbe)
+        self.input_amplitude_in.textEdited.connect(lambda: self.plot.updatePlot())
         self.input_frequency_in.textEdited.connect(self.controller.changeFrequencySignalProbe)
+        self.input_frequency_in.textEdited.connect(lambda: self.plot.updatePlot())
         self.input_phase_in.textEdited.connect(self.controller.changePhaseSignalProbe)
+        self.input_phase_in.textEdited.connect(lambda: self.plot.updatePlot())
 
         _params_in_group_box_.setLayout(_params_in_)
         return _params_in_group_box_
