@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class SignalProbe:
+class SignalReceived:
     frequency: float
     amplitude: float
     phase: float

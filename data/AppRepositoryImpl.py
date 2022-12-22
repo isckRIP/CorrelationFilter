@@ -1,19 +1,17 @@
 from domain.repository.AppRepository import AppRepository
 from domain.entity.GraphOfSignal import GraphOfSignal
-from domain.entity.SignalProbe import SignalProbe
 from math import pi, cos
 
 data = GraphOfSignal
 
 class AppRepositoryImpl(AppRepository):
 
-    def getGraphOfSignal(self, signal: SignalProbe):
+    def getGraphOfSignal(self, signal):
         x = []
         y = []
         for i in range(int(signal.duration * signal.time)):
             x.append(i / signal.duration)
             y.append(cos(2 * pi * signal.frequency * i / signal.duration + signal.phase) * signal.amplitude)
-            # data(x, y)
             data.x = x
             data.y = y
 

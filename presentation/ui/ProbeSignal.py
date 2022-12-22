@@ -12,7 +12,7 @@ class SignalProbeCreator:
         _params_in_group_box_ = QGroupBox("Зондирующий сигнал")
         _params_in_group_box_.setMaximumWidth(200)
 
-        self.controller.setSignalProbe(12, 12, 0, 10, 10)
+        self.controller.setSignalProbe(12, 12, 0, 1000, 10)
         self.controller.calculateSignal(self.controller.getSignalProbe())
 
         # Задаём виджеты полей ввода и их размер
@@ -42,11 +42,12 @@ class SignalProbeCreator:
 
         # Подключаем коннекторы к полям ввода
         self.input_amplitude_in.textEdited.connect(self.controller.changeAmplitudeSignalProbe)
-        self.input_amplitude_in.textEdited.connect(lambda: self.plot.updatePlot())
+        self.input_amplitude_in.textEdited.connect(lambda: self.plot.updatePlotProbe())
+        self.input_amplitude_in.textEdited.connect(lambda: self.plot.updatePlotProbe())
         self.input_frequency_in.textEdited.connect(self.controller.changeFrequencySignalProbe)
-        self.input_frequency_in.textEdited.connect(lambda: self.plot.updatePlot())
+        self.input_frequency_in.textEdited.connect(lambda: self.plot.updatePlotProbe())
         self.input_phase_in.textEdited.connect(self.controller.changePhaseSignalProbe)
-        self.input_phase_in.textEdited.connect(lambda: self.plot.updatePlot())
+        self.input_phase_in.textEdited.connect(lambda: self.plot.updatePlotProbe())
 
         _params_in_group_box_.setLayout(_params_in_)
         return _params_in_group_box_

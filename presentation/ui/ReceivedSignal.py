@@ -1,37 +1,49 @@
 from PyQt5.QtWidgets import QGroupBox, QLineEdit, QGridLayout, QLabel
+from presentation.controller.MainAppController import MainAppController
+from presentation.ui.Plots import PlotsCreator
 
 
-def createReceivedSignal(self):
-    self._params_out_group_box_ = QGroupBox("Принимаемый сигнал")
-    self._params_out_group_box_.setMaximumWidth(200)
+class SignalReceivedCreator:
+    controller = MainAppController()
+    plot = PlotsCreator()
 
-    # Задаём виджеты полей ввода и их размер
-    self.input_frequency_out = QLineEdit()
-    self.input_phase_out = QLineEdit()
-    self.input_amplitude_out = QLineEdit()
-    self.input_frequency_out.setFixedWidth(50)
-    self.input_phase_out.setFixedWidth(50)
-    self.input_amplitude_out.setFixedWidth(50)
+    def createReceivedSignal(self):
+        self._params_received_group_box_ = QGroupBox("Принимаемый сигнал")
+        self._params_received_group_box_.setMaximumWidth(200)
 
-    # Создаем сетку для элементов
-    _params_out_ = QGridLayout()
-    _params_out_.addWidget(QLabel("Частота (Гц):"), 0, 0)
-    _params_out_.addWidget(QLabel("Фаза:"), 1, 0)
-    _params_out_.addWidget(QLabel("Амплитуда (мВ):"), 2, 0)
-    _params_out_.addWidget(self.input_frequency_out, 0, 1)
-    _params_out_.addWidget(self.input_phase_out, 1, 1)
-    _params_out_.addWidget(self.input_amplitude_out, 2, 1)
-    _params_out_.setColumnStretch(2, 1)
+        self.controller.setSignalReceived(12, 12, 0, 1000, 10)
+        self.controller.calculateSignal(self.controller.getSignalReceived())
 
-    # Устанавливаем значения поумолчанию
-    self.input_frequency_out.setText("2")
-    self.input_phase_out.setText("0")
-    self.input_amplitude_out.setText("5")
+        # Задаём виджеты полей ввода и их размер
+        self.input_frequency_received = QLineEdit()
+        self.input_phase_received = QLineEdit()
+        self.input_amplitude_received = QLineEdit()
+        self.input_frequency_received.setFixedWidth(50)
+        self.input_phase_received.setFixedWidth(50)
+        self.input_amplitude_received.setFixedWidth(50)
 
-    # Подключаем коннекторы к полям ввода
-    # self.input_amplitude_out.textEdited.connect(self.amplitudeOutChanged)
-    # self.input_phase_out.textEdited.connect(self.phaseOutChanged)
-    # self.input_frequency_out.textEdited.connect(self.frequencyOutChanged)
+        # Создаем сетку для элементов
+        _params_received_ = QGridLayout()
+        _params_received_.addWidget(QLabel("Частота (Гц):"), 0, 0)
+        _params_received_.addWidget(QLabel("Фаза:"), 1, 0)
+        _params_received_.addWidget(QLabel("Амплитуда (мВ):"), 2, 0)
+        _params_received_.addWidget(self.input_frequency_received, 0, 1)
+        _params_received_.addWidget(self.input_phase_received, 1, 1)
+        _params_received_.addWidget(self.input_amplitude_received, 2, 1)
+        _params_received_.setColumnStretch(2, 1)
 
-    self._params_out_group_box_.setLayout(_params_out_)
-    return self
+        # Устанавливаем значения поумолчанию
+        self.input_frequency_received.setText(str(self.controller.getSignalReceived().frequency))
+        self.input_phase_received.setText(str(self.controller.getSignalReceived().phase))
+        self.input_amplitude_received.setText(str(self.controller.getSignalReceived().amplitude))
+
+        self.input_amplitude_received.textEdited.connect(self.controller.changeAmplitudeSignalReceived)
+        self.input_amplitude_received.textEdited.connect(lambda: self.plot.updatePlotReceived())
+        self.input_frequency_received.textEdited.connect(self.controller.changeFrequencySignalReceived)
+        self.input_frequency_received.textEdited.connect(lambda: self.plot.updatePlotReceived())
+        self.input_phase_received.textEdited.connect(self.controller.changePhaseSignalReceived)
+        self.input_phase_received.textEdited.connect(lambda: self.plot.updatePlotReceived())
+
+        self._params_received_group_box_.setLayout(_params_received_)
+
+        return self._params_received_group_box_
