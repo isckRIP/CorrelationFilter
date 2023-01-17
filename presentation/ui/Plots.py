@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QTabWidget, QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QTabWidget, QWidget, QVBoxLayout
 from pyqtgraph import PlotWidget, PlotCurveItem
 from presentation.controller.MainAppController import MainAppController
 

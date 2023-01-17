@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QGridLayout
+from PyQt6.QtWidgets import QDialog, QGridLayout
 from presentation.ui.ProbeSignal import SignalProbeCreator
 from presentation.ui.ReceivedSignal import SignalReceivedCreator
 from presentation.ui.Plots import PlotsCreator

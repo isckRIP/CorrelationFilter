@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 # from Application.MainApp import MainWindow
 from presentation.ui.MainAppWindow import MainAppWindow
 

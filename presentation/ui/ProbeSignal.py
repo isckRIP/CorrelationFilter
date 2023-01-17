@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGroupBox, QLineEdit, QGridLayout, QLabel
+from PyQt6.QtWidgets import QGroupBox, QLineEdit, QGridLayout, QLabel
 from presentation.controller.MainAppController import MainAppController
 from presentation.ui.Plots import PlotsCreator
 

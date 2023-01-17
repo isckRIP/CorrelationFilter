@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGroupBox, QGridLayout, QLineEdit, QDial, QLabel
+from PyQt6.QtWidgets import QGroupBox, QGridLayout, QLineEdit, QDial, QLabel
 
 
 def createSignalSettings(self):
