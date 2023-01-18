@@ -8,3 +8,5 @@ class SignalReceived:
     phase: float
     duration: float
     time: float
+    x: list
+    y: list

@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-
 @dataclass
-class GraphOfSignal:
+class SignalProduct:
     x: list
     y: list

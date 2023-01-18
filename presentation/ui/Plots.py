@@ -49,4 +49,3 @@ class PlotsCreator:
     def updatePlotReceived(self):
         self.plot_received.setData(self.controller.updatePlotSignalReceived(MainAppController)[0],
                                    self.controller.updatePlotSignalReceived(MainAppController)[1])
-        "Обн"
