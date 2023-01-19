@@ -20,7 +20,7 @@ class MainAppController:
         y = self.calculateSignal(MainAppController, self.signal_probe)[1]
         self.signal_probe.x = x
         self.signal_probe.y = y
-        self.updateSignalProduct(MainAppController)
+        self.updatePlotSignalProduct(MainAppController)
         return x, y
 
     def getSignalProbe(self):
@@ -50,7 +50,7 @@ class MainAppController:
         y = self.calculateSignal(MainAppController, self.signal_received)[1]
         self.signal_received.x = x
         self.signal_received.y = y
-        self.updateSignalProduct(MainAppController)
+        self.updatePlotSignalProduct(MainAppController)
         return x, y
 
     def getSignalReceived(self):
@@ -79,7 +79,8 @@ class MainAppController:
         x, y = self.impl.multiplyGraphOfSignals([self.signal_probe, self.signal_received])
         return x, y
 
-    def updateSignalProduct(self):
+    def updatePlotSignalProduct(self):
         x, y = self.multiplySignals(MainAppController)
         self.signal_product.x = x
         self.signal_product.y = y
+        return self.signal_product.x, self.signal_product.y

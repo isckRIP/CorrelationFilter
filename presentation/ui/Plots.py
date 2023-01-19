@@ -23,10 +23,13 @@ class PlotsCreator:
         plot_signal_out = PlotWidget()
         plot_signal_product = PlotWidget()
 
+        # Устанавливаем координаты графиков
         self.plot_probe.setData(self.controller.updatePlotSignalProbe(MainAppController)[0],
                                 self.controller.updatePlotSignalProbe(MainAppController)[1])
         self.plot_received.setData(self.controller.updatePlotSignalReceived(MainAppController)[0],
                                    self.controller.updatePlotSignalReceived(MainAppController)[1])
+        self.plot_product.setData(self.controller.updatePlotSignalProduct(MainAppController)[0],
+                                  self.controller.updatePlotSignalProduct(MainAppController)[1])
 
         plot_signal_in.addItem(self.plot_probe)
         plot_signal_out.addItem(self.plot_received)
@@ -42,10 +45,17 @@ class PlotsCreator:
         _plots_group_box_.addTab(calculations_group_box, "Рассчёты")
         return _plots_group_box_
 
+    # Обновление графиков
     def updatePlotProbe(self):
         self.plot_probe.setData(self.controller.updatePlotSignalProbe(MainAppController)[0],
                                 self.controller.updatePlotSignalProbe(MainAppController)[1])
+        self.updatePlotProduct()
 
     def updatePlotReceived(self):
         self.plot_received.setData(self.controller.updatePlotSignalReceived(MainAppController)[0],
                                    self.controller.updatePlotSignalReceived(MainAppController)[1])
+        self.updatePlotProduct()
+
+    def updatePlotProduct(self):
+        self.plot_product.setData(self.controller.updatePlotSignalProduct(MainAppController)[0],
+                                  self.controller.updatePlotSignalProduct(MainAppController)[1])

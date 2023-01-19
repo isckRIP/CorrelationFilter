@@ -20,7 +20,7 @@ class AppRepositoryImpl(AppRepository):
         if len(signals[0].x) != len(signals[1].x):
             return 0, 0
         else:
-            x1, y1, x2, y2 = signals[0].x, signals[0].y, signals[1].x, signals[1].y
+            y1 = signals[0].y.copy()
             for i in range(len(signals[0].x)-1):
-                y1[i] = y1[i] * y2[i]
-            return (x2, y1)
+                y1[i] = signals[0].y[i] * signals[1].y[i]
+            return signals[0].x, y1
