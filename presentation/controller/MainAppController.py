@@ -45,6 +45,10 @@ class MainAppController:
         self.signal_probe.frequency = float(fr)
         self.calculateSignal(self.signal_probe)
 
+    def changeTimeSignalProbe(self, time):
+        self.signal_probe.time = float(time)
+        self.calculateSignal(self.signal_probe)
+
     def updatePlotSignalReceived(self):
         x = self.calculateSignal(MainAppController, self.signal_received)[0]
         y = self.calculateSignal(MainAppController, self.signal_received)[1]
@@ -75,6 +79,11 @@ class MainAppController:
         self.signal_received.frequency = float(fr)
         self.calculateSignal(self.signal_received)
 
+    def changeTimeSignalReceived(self, time):
+        self.signal_received.time = float(time)
+        self.calculateSignal(self.signal_received)
+        print(self.signal_received.time)
+
     def multiplySignals(self):
         x, y = self.impl.multiplyGraphOfSignals([self.signal_probe, self.signal_received])
         return x, y
@@ -84,3 +93,8 @@ class MainAppController:
         self.signal_product.x = x
         self.signal_product.y = y
         return self.signal_product.x, self.signal_product.y
+
+    def changeTimePlots(self, time):
+        self.changeTimeSignalReceived(time)
+        self.changeTimeSignalProbe(time)
+        print("change")
