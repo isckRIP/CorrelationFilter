@@ -34,14 +34,12 @@ class SignalSettingsCreator:
         self.math.addWidget(self.dial_time, 1, 1)
 
         # Подключаем коннекторы
-        # self.dial_duration.valueChanged.connect(self.durationIsChanged)
         self.dial_time.valueChanged.connect(self.controller.changeTimePlots)
         self.dial_time.valueChanged.connect(lambda: self.plot.updatePlotReceived())
         self.dial_time.valueChanged.connect(lambda: self.plot.updatePlotProbe())
         self.dial_duration.valueChanged.connect(self.controller.changeDurationPlots)
         self.dial_duration.valueChanged.connect(lambda: self.plot.updatePlotReceived())
         self.dial_duration.valueChanged.connect(lambda: self.plot.updatePlotProbe())
-
 
         self._math_group_box_.setLayout(self.math)
         return self._math_group_box_

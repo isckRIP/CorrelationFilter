@@ -99,6 +99,7 @@ class MainAppController:
         x, y = self.multiplySignals(MainAppController)
         self.signal_product.x = x
         self.signal_product.y = y
+        self.integrateSignal(MainAppController)
         return self.signal_product.x, self.signal_product.y
 
     def changeTimePlots(self, time):
@@ -108,3 +109,6 @@ class MainAppController:
     def changeDurationPlots(self, dur):
         self.changeDurationSignalReceived(dur)
         self.changeDurationSignalProbe(dur)
+
+    def integrateSignal(self):
+        self.impl.integrateSignal([self.signal_probe, self.signal_received])

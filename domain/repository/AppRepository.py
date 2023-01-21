@@ -6,9 +6,14 @@ from domain.entity.GraphOfSignal import GraphOfSignal
 class AppRepository(ABC):
 
     @abstractmethod
-    def getGraphOfSignal(self, signal: SignalSin) -> GraphOfSignal:
+    def getGraphOfSignal(self, signal: SignalSin):
         pass
 
     @abstractmethod
-    def multiplyGraphOfSignals(self, signals: list[GraphOfSignal]) -> GraphOfSignal:
+    def multiplyGraphOfSignals(self, signals: list[SignalSin]) -> SignalSin:
+        pass
+
+
+    @abstractmethod
+    def integrateSignal(self, signals: list[SignalSin]):
         pass
