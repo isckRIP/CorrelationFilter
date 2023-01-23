@@ -7,10 +7,9 @@ class SignalProbeCreator:
     controller = MainAppController()
     plot = PlotsCreator()
 
-
     def createProbeSignal(self):
-        _params_in_group_box_ = QGroupBox("Зондирующий сигнал")
-        _params_in_group_box_.setMaximumWidth(200)
+        params_in_group_box = QGroupBox("Зондирующий сигнал")
+        params_in_group_box.setMaximumWidth(200)
 
         self.controller.setSignalProbe(12, 12, 0, 1000, 10)
         self.controller.calculateSignal(self.controller.getSignalProbe())
@@ -38,8 +37,6 @@ class SignalProbeCreator:
         self.input_phase_in.setText(str(self.controller.getSignalProbe().phase))
         self.input_amplitude_in.setText(str(self.controller.getSignalProbe().amplitude))
 
-
-
         # Подключаем коннекторы к полям ввода
         self.input_amplitude_in.textEdited.connect(self.controller.changeAmplitudeSignalProbe)
         self.input_amplitude_in.textEdited.connect(lambda: self.plot.updatePlotProbe())
@@ -49,5 +46,5 @@ class SignalProbeCreator:
         self.input_phase_in.textEdited.connect(self.controller.changePhaseSignalProbe)
         self.input_phase_in.textEdited.connect(lambda: self.plot.updatePlotProbe())
 
-        _params_in_group_box_.setLayout(_params_in_)
-        return _params_in_group_box_
+        params_in_group_box.setLayout(_params_in_)
+        return params_in_group_box

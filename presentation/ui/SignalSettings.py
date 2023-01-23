@@ -9,9 +9,8 @@ class SignalSettingsCreator:
     math = QGridLayout()
 
     def createSignalSettings(self):
-        self._math_group_box_ = QGroupBox("Настройки графиков")
-
         # Создаем виджеты
+        self.math_group_box = QGroupBox("Настройки графиков")
         self.input_duration = QLineEdit()
         self.input_time = QLineEdit()
         self.dial_time = QDial()
@@ -39,5 +38,5 @@ class SignalSettingsCreator:
         self.dial_duration.valueChanged.connect(self.controller.changeDurationPlots)
         self.dial_duration.valueChanged.connect(lambda: self.plot.updateAll())
 
-        self._math_group_box_.setLayout(self.math)
-        return self._math_group_box_
+        self.math_group_box.setLayout(self.math)
+        return self.math_group_box

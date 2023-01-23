@@ -9,4 +9,3 @@ if __name__ == "__main__":
     window.setMinimumSize(1200, 600)
     window.show()
     sys.exit(app.exec())
-

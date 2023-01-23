@@ -37,7 +37,5 @@ class AppRepositoryImpl(AppRepository):
         x = signals[0].x.copy()
         y = signals[0].y.copy()
         for i in range(len(signals[0].y)):
-            y[i] = abs(y[i]) + abs(y[i-1])
+            y[i] = abs(y[i]) + abs(y[i - 1])
         return x, y
-
-

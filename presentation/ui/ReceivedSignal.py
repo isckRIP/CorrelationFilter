@@ -8,8 +8,8 @@ class SignalReceivedCreator:
     plot = PlotsCreator()
 
     def createReceivedSignal(self):
-        self._params_received_group_box_ = QGroupBox("Принимаемый сигнал")
-        self._params_received_group_box_.setMaximumWidth(200)
+        self.params_received_group_box = QGroupBox("Принимаемый сигнал")
+        self.params_received_group_box.setMaximumWidth(200)
 
         self.controller.setSignalReceived(12, 12, 0, 1000, 10)
         self.controller.calculateSignal(self.controller.getSignalReceived())
@@ -44,6 +44,6 @@ class SignalReceivedCreator:
         self.input_phase_received.textEdited.connect(self.controller.changePhaseSignalReceived)
         self.input_phase_received.textEdited.connect(lambda: self.plot.updatePlotReceived())
 
-        self._params_received_group_box_.setLayout(_params_received_)
+        self.params_received_group_box.setLayout(_params_received_)
 
-        return self._params_received_group_box_
+        return self.params_received_group_box

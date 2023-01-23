@@ -6,7 +6,7 @@ from domain.entity.GraphOfSignal import GraphOfSignal
 
 class MainAppController:
     impl = AppRepositoryImpl()
-    signal_probe = SignalSin(0, 0, 0, 0, 0,  [], [])
+    signal_probe = SignalSin(0, 0, 0, 0, 0, [], [])
     signal_received = SignalSin(0, 0, 0, 0, 0, [], [])
     signal_product = GraphOfSignal([], [])
     signal_integrate = GraphOfSignal([], [])
@@ -17,11 +17,11 @@ class MainAppController:
         return graph_of_signal.x, graph_of_signal.y
 
     def updatePlotSignalProbe(self):
-        x = self.calculateSignal(MainAppController, self.signal_probe)[0]
-        y = self.calculateSignal(MainAppController, self.signal_probe)[1]
+        x = self.calculateSignal(self.signal_probe)[0]
+        y = self.calculateSignal(self.signal_probe)[1]
         self.signal_probe.x = x
         self.signal_probe.y = y
-        self.updatePlotSignalProduct(MainAppController)
+        self.updatePlotSignalProduct()
         return x, y
 
     def getSignalProbe(self):
@@ -55,11 +55,11 @@ class MainAppController:
         self.calculateSignal(self.signal_probe)
 
     def updatePlotSignalReceived(self):
-        x = self.calculateSignal(MainAppController, self.signal_received)[0]
-        y = self.calculateSignal(MainAppController, self.signal_received)[1]
+        x = self.calculateSignal(self.signal_received)[0]
+        y = self.calculateSignal(self.signal_received)[1]
         self.signal_received.x = x
         self.signal_received.y = y
-        self.updatePlotSignalProduct(MainAppController)
+        self.updatePlotSignalProduct()
         return x, y
 
     def getSignalReceived(self):
@@ -97,7 +97,7 @@ class MainAppController:
         return x, y
 
     def updatePlotSignalProduct(self):
-        x, y = self.multiplySignals(MainAppController)
+        x, y = self.multiplySignals()
         self.signal_product.x = x
         self.signal_product.y = y
         return self.signal_product.x, self.signal_product.y
@@ -115,7 +115,7 @@ class MainAppController:
         return x, y
 
     def updatePlotIntegrate(self):
-        x, y = self.integratePlots(MainAppController)
+        x, y = self.integratePlots()
         self.signal_integrate.x = x
         self.signal_integrate.y = y
         return self.signal_integrate.x, self.signal_integrate.y
