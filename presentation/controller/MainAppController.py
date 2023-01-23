@@ -1,14 +1,15 @@
 from data.AppRepositoryImpl import AppRepositoryImpl
 from domain.entity.GraphOfSignal import GraphOfSignal
 from domain.entity.SignalSin import SignalSin
-from domain.entity.SignalProduct import SignalProduct
+from domain.entity.GraphOfSignal import GraphOfSignal
 
 
 class MainAppController:
     impl = AppRepositoryImpl()
     signal_probe = SignalSin(0, 0, 0, 0, 0,  [], [])
     signal_received = SignalSin(0, 0, 0, 0, 0, [], [])
-    signal_product = SignalProduct([], [])
+    signal_product = GraphOfSignal([], [])
+    signal_integrate = GraphOfSignal([], [])
 
     def calculateSignal(self, signal):
         graph_of_signal = GraphOfSignal
@@ -99,7 +100,6 @@ class MainAppController:
         x, y = self.multiplySignals(MainAppController)
         self.signal_product.x = x
         self.signal_product.y = y
-        self.integrateSignal(MainAppController)
         return self.signal_product.x, self.signal_product.y
 
     def changeTimePlots(self, time):
@@ -110,5 +110,12 @@ class MainAppController:
         self.changeDurationSignalReceived(dur)
         self.changeDurationSignalProbe(dur)
 
-    def integrateSignal(self):
-        self.impl.integrateSignal([self.signal_probe, self.signal_received])
+    def integratePlots(self):
+        x, y = self.impl.integrateSignals([self.signal_probe, self.signal_received])
+        return x, y
+
+    def updatePlotIntegrate(self):
+        x, y = self.integratePlots(MainAppController)
+        self.signal_integrate.x = x
+        self.signal_integrate.y = y
+        return self.signal_integrate.x, self.signal_integrate.y

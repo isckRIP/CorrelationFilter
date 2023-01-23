@@ -1,9 +1,7 @@
-import sympy
-
 from domain.entity.SignalSin import SignalSin
 from domain.repository.AppRepository import AppRepository
 from domain.entity.GraphOfSignal import GraphOfSignal
-from math import pi, cos, inf
+from math import pi, cos, fabs
 from scipy.integrate import quad
 
 data = GraphOfSignal
@@ -29,11 +27,17 @@ class AppRepositoryImpl(AppRepository):
                 y1[i] = signals[0].y[i] * signals[1].y[i]
             return signals[0].x, y1
 
-    def integrateSignal(self, signals: list[SignalSin]):
-        def f(t):
-            return cos((2 * pi * signals[0].frequency * t + signals[0].phase) * signals[0].amplitude) * \
-                cos((2 * pi * signals[1].frequency * t + signals[1].phase) * signals[1].amplitude)
+    def integrateSignals(self, signals: list[SignalSin]):
 
-        res, err = quad(f, 0, signals[0].time)
+        # def f(t):
+        #     return cos((2 * pi * signals[0].frequency * t + signals[0].phase) * signals[0].amplitude) * \
+        #         cos((2 * pi * signals[1].frequency * t + signals[1].phase) * signals[1].amplitude)
+        # res, err = quad(f, 0, signals[0].time)
 
-        print(f"The numerical result is {res} (+-{err})")
+        x = signals[0].x.copy()
+        y = signals[0].y.copy()
+        for i in range(len(signals[0].y)):
+            y[i] = abs(y[i]) + abs(y[i-1])
+        return x, y
+
+

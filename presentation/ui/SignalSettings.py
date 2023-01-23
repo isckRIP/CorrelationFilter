@@ -19,7 +19,7 @@ class SignalSettingsCreator:
 
         # Устанавливаем настройки виджетов
         self.dial_time.setMaximum(100)
-        self.dial_time.setMinimum(0)
+        self.dial_time.setMinimum(1)
         self.dial_duration.setFixedWidth(150)
         self.dial_duration.setMaximum(4800)
         self.dial_duration.setMinimum(10)
@@ -35,11 +35,9 @@ class SignalSettingsCreator:
 
         # Подключаем коннекторы
         self.dial_time.valueChanged.connect(self.controller.changeTimePlots)
-        self.dial_time.valueChanged.connect(lambda: self.plot.updatePlotReceived())
-        self.dial_time.valueChanged.connect(lambda: self.plot.updatePlotProbe())
+        self.dial_time.valueChanged.connect(lambda: self.plot.updateAll())
         self.dial_duration.valueChanged.connect(self.controller.changeDurationPlots)
-        self.dial_duration.valueChanged.connect(lambda: self.plot.updatePlotReceived())
-        self.dial_duration.valueChanged.connect(lambda: self.plot.updatePlotProbe())
+        self.dial_duration.valueChanged.connect(lambda: self.plot.updateAll())
 
         self._math_group_box_.setLayout(self.math)
         return self._math_group_box_

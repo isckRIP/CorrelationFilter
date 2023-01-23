@@ -15,5 +15,5 @@ class AppRepository(ABC):
 
 
     @abstractmethod
-    def integrateSignal(self, signals: list[SignalSin]):
+    def integrateSignals(self, signals: list[SignalSin]):
         pass
