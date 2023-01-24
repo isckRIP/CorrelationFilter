@@ -72,7 +72,6 @@ class PlotsCreator:
                                     self.controller.updatePlotIntegrate()[1])
         self.plot_threshold.setData(self.controller.getPlotThreshold()[0],
                                     self.controller.getPlotThreshold()[1])
-        self.set_threshold_value.setMaximum(int(self.controller.signal_integrate.y[-1] * 1.2))
 
     def updateAll(self):
         self.updatePlotIntegrate()
