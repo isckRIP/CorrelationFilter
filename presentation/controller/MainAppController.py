@@ -1,5 +1,4 @@
 from data.AppRepositoryImpl import AppRepositoryImpl
-from domain.entity.GraphOfSignal import GraphOfSignal
 from domain.entity.SignalSin import SignalSin
 from domain.entity.GraphOfSignal import GraphOfSignal
 
@@ -10,6 +9,7 @@ class MainAppController:
     signal_received = SignalSin(0, 0, 0, 0, 0, [], [])
     signal_product = GraphOfSignal([], [])
     signal_integrate = GraphOfSignal([], [])
+    signal_threshold = GraphOfSignal([], [])
 
     def calculateSignal(self, signal):
         graph_of_signal = GraphOfSignal
@@ -47,7 +47,7 @@ class MainAppController:
         self.calculateSignal(self.signal_probe)
 
     def changeTimeSignalProbe(self, time):
-        self.signal_probe.time = float(time)
+        self.signal_probe.time = float(time) / 100
         self.calculateSignal(self.signal_probe)
 
     def changeDurationSignalProbe(self, dur):
@@ -85,7 +85,7 @@ class MainAppController:
         self.calculateSignal(self.signal_received)
 
     def changeTimeSignalReceived(self, time):
-        self.signal_received.time = float(time)
+        self.signal_received.time = float(time) / 100
         self.calculateSignal(self.signal_received)
 
     def changeDurationSignalReceived(self, dur):
@@ -119,3 +119,14 @@ class MainAppController:
         self.signal_integrate.x = x
         self.signal_integrate.y = y
         return self.signal_integrate.x, self.signal_integrate.y
+
+    def setThreshold(self, value):
+        self.signal_threshold.x = self.signal_integrate.x.copy()
+        y = []
+        for i in range(len(self.signal_threshold.x)):
+            y.append(value)
+        self.signal_threshold.y = y
+
+
+    def getPlotThreshold(self):
+        return self.signal_threshold.x, self.signal_threshold.y

@@ -9,6 +9,7 @@ class PlotsCreator:
     plot_received = PlotCurveItem()
     plot_product = PlotCurveItem()
     plot_integrate = PlotCurveItem()
+    plot_threshold = PlotCurveItem()
 
     def createPlots(self):
         plots_group_box = QTabWidget()
@@ -32,11 +33,15 @@ class PlotsCreator:
                                   self.controller.updatePlotSignalProduct()[1])
         self.plot_integrate.setData(self.controller.updatePlotIntegrate()[0],
                                     self.controller.updatePlotIntegrate()[1])
+        self.plot_threshold.setData(self.controller.getPlotThreshold()[0],
+                                    self.controller.getPlotThreshold()[1])
 
         plot_signal_in.addItem(self.plot_probe)
         plot_signal_out.addItem(self.plot_received)
         plot_signal_product.addItem(self.plot_product)
         plot_signal_integrate.addItem(self.plot_integrate)
+        plot_signal_integrate.addItem(self.plot_threshold)
+
         plots_signals.addWidget(plot_signal_in)
         plots_signals.addWidget(plot_signal_out)
         plots_calculations.addWidget(plot_signal_product)
@@ -65,6 +70,9 @@ class PlotsCreator:
     def updatePlotIntegrate(self):
         self.plot_integrate.setData(self.controller.updatePlotIntegrate()[0],
                                     self.controller.updatePlotIntegrate()[1])
+        self.plot_threshold.setData(self.controller.getPlotThreshold()[0],
+                                    self.controller.getPlotThreshold()[1])
+        self.set_threshold_value.setMaximum(int(self.controller.signal_integrate.y[-1] * 1.2))
 
     def updateAll(self):
         self.updatePlotIntegrate()
